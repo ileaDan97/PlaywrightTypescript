@@ -3,6 +3,7 @@ import {NavigationPage} from "./page-objects/navigationPage";
 import {FormLayoutsPage} from "./page-objects/formLayoutsPage";
 import {DatePickerPage} from "./page-objects/datePickerPage";
 import {PageManager} from "./page-objects/pageManager";
+import {argosScreenshot} from "@argos-ci/playwright";
 // @ts-ignore
 import {faker} from "@faker-js/faker/locale/ar";
 
@@ -40,5 +41,7 @@ test('parametrized methods', async ({page}) => {
 test.only('testing with argos ci', async ({page}) => {
   const pm = new PageManager(page)
   await pm.navigateToPage().formLayoutsPage()
+  await argosScreenshot(page, "form layouts page");
   await pm.navigateToPage().datepickerPage()
+  await argosScreenshot(page, "date picker page");
 })

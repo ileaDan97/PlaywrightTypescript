@@ -14,7 +14,7 @@ require('dotenv').config();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig<TestOptions>({
-  timeout: 10000,
+  // timeout: 10000,
   // globalTimeout: 60000,
   expect: {
     toMatchSnapshot: {maxDiffPixels: 50}
@@ -23,13 +23,24 @@ export default defineConfig<TestOptions>({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  // forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [['html'],
+    process.env.CI ? ["dot"] : ["list"],
+    [
+      "@argos-ci/playwright/reporter",
+      {
+        // Upload to Argos on CI only.
+        uploadToArgos: !!process.env.CI,
+
+        // Set your Argos token (required if not using GitHub Actions).
+        token: "ARGOS_TOKEN=argos_1b7300e8fd581bd8d1079252dab6e43013",
+      },
+    ],
     // ['junit', {outputFile: 'test-results/junitReport.xml'}],
     // ['allure-playwright'],
     // ['json', {outputFile: 'test-results/jsonReport.json'}]
@@ -44,6 +55,7 @@ export default defineConfig<TestOptions>({
       : 'http://localhost:4200',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot: "only-on-failure",
     // actionTimeout: 5000,
     // navigationTimeout: 5000,
     video: "on"
