@@ -37,7 +37,7 @@ test('parametrized methods', async ({page}) => {
 })
 
 
-test.only('testing with Argos ci', async ({page}) => {
+test.only('testing with argos ci', async ({page}) => {
   const pm = new PageManager(page)
   await pm.navigateToPage().formLayoutsPage()
   await pm.navigateToPage().datepickerPage()
